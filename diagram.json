@@ -1,0 +1,86 @@
+{
+  "wizardId": "farbe-wizard.v1",
+  "title": "Farbauswahl",
+  "version": "1.0.0",
+  "i18n": {
+    "defaultLocale": "de",
+    "strings": {
+      "de": {
+        "s_start": "Start",
+        "q_color": "Welche Farbe?",
+        "a_yes": "Ja",
+        "a_no": "Nein",
+        "r_red": "Rot",
+        "r_blue": "Blau",
+        "btn_restart": "Neu starten"
+      },
+      "en": {
+        "s_start": "Start",
+        "q_color": "Which color?",
+        "a_yes": "Yes",
+        "a_no": "No",
+        "r_red": "Red",
+        "r_blue": "Blue",
+        "btn_restart": "Restart"
+      }
+    }
+  },
+  "nodes": [
+    {
+      "id": "start",
+      "type": "start",
+      "text": "s_start",
+      "next": "q1"
+    },
+    {
+      "id": "q1",
+      "type": "decision",
+      "text": "q_color",
+      "outcomes": [
+        {
+          "label": "a_yes",
+          "condition": "true",
+          "next": "r1"
+        },
+        {
+          "label": "a_no",
+          "condition": "else",
+          "next": "r2"
+        }
+      ]
+    },
+    {
+      "id": "r1",
+      "type": "result",
+      "text": "r_red",
+      "actions": [
+        {
+          "type": "tooltip",
+          "text": "Rot ist eine Primärfarbe."
+        }
+      ]
+    },
+    {
+      "id": "r2",
+      "type": "result",
+      "text": "r_blue",
+      "actions": [
+        {
+          "type": "tooltip",
+          "text": "Blau ist ebenfalls eine Primärfarbe."
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "source": {
+      "format": "Mermaid",
+      "file": "mermaid_example.mmd",
+      "content": "\nflowchart TD\n  A([Start]) --> B{Welche Farbe?}\n  B -- Ja --> C[Rot]\n  B -- Nein --> D[Blau]\n"
+    },
+    "audit": {
+      "createdBy": "copilot",
+      "createdAt": "2026-01-21T08:52:58+01:00"
+    }
+  }
+}
