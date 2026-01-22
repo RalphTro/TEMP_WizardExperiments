@@ -1,13 +1,10 @@
-# TLS Certificate Validation – Wizard (Demo)
+# Wizard Demo
 
-Jetzt mit **sichtbaren Prozess-/Task-Schritten** (kein Auto-Advance). Jede Aktivität wird als eigener Schritt mit "Continue"-Button gerendert.
+Demo rendering flowchart graphic in GS1's DigSig Technical Implementation Guideline into an interactive, web-based wizard tool. 
 
-## Dateien
-- `index.html` – Einstiegspunkt
-- `styles.css` – Styling
-- `app.js` – Wizard-Logik
-- `diagram.json` – neutrales Zielformat (mit i18n)
-- `mermaid_example.mmd` – Mermaid-Quelle
+## Original Graphic 
+![Flowchart DigSig Guideline](/OriginalFlowchartDigSigGuideline1dot0Page91.png)
 
-## Nutzung
-Öffne `index.html` im Browser oder nutze einen lokalen Server (z. B. VS Code *Live Server*), damit `fetch()` für `diagram.json` funktioniert.
+## Link to Wizard 
+
+[Access Wizard Tool](https://ralphtro.github.io/TEMP_WizardExperiments/)
