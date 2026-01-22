@@ -1,27 +1,57 @@
 {
-  "wizardId": "farbe-wizard.v1",
-  "title": "Farbauswahl",
-  "version": "1.0.0",
+  "wizardId": "tls-cert-validation.v1",
+  "title": "TLS Certificate Validation",
+  "version": "1.1.0",
   "i18n": {
-    "defaultLocale": "de",
+    "defaultLocale": "en",
     "strings": {
-      "de": {
-        "s_start": "Start",
-        "q_color": "Welche Farbe?",
-        "a_yes": "Ja",
-        "a_no": "Nein",
-        "r_red": "Rot",
-        "r_blue": "Blau",
-        "btn_restart": "Neu starten"
-      },
       "en": {
         "s_start": "Start",
-        "q_color": "Which color?",
+        "p_A": "Extract bottom certificate (website certificate) and make it the current certificate",
+        "p_B": "Compare website name to common name",
+        "q_C": "Names match?",
+        "p_D": "Apply other verification requirements (validity period, revocation, etc.)",
+        "q_E": "Verification requirements passed?",
+        "p_F": "Verify issuer's signature of current certificate",
+        "q_G": "Signature verified?",
+        "p_H": "Extract issuer certificate",
+        "p_I": "Make issuer certificate the current certificate",
+        "p_J": "Compare issuer certificate to current certificate",
+        "q_K": "Certificates are the same?",
+        "p_L": "Lookup issuer certificate in trusted root certificate database",
+        "q_M": "Certificate found?",
+        "p_N": "Compare issuer certificate to one found in trusted root certificate database",
+        "q_O": "Certificates match?",
+        "r_X": "[Invalid connection]",
+        "r_Y": "[Valid connection]",
         "a_yes": "Yes",
         "a_no": "No",
-        "r_red": "Red",
-        "r_blue": "Blue",
-        "btn_restart": "Restart"
+        "btn_restart": "Restart",
+        "btn_continue": "Continue"
+      },
+      "de": {
+        "s_start": "Start",
+        "p_A": "Extract bottom certificate (website certificate) and make it the current certificate",
+        "p_B": "Compare website name to common name",
+        "q_C": "Names match?",
+        "p_D": "Apply other verification requirements (validity period, revocation, etc.)",
+        "q_E": "Verification requirements passed?",
+        "p_F": "Verify issuer's signature of current certificate",
+        "q_G": "Signature verified?",
+        "p_H": "Extract issuer certificate",
+        "p_I": "Make issuer certificate the current certificate",
+        "p_J": "Compare issuer certificate to current certificate",
+        "q_K": "Certificates are the same?",
+        "p_L": "Lookup issuer certificate in trusted root certificate database",
+        "q_M": "Certificate found?",
+        "p_N": "Compare issuer certificate to one found in trusted root certificate database",
+        "q_O": "Certificates match?",
+        "r_X": "[Invalid connection]",
+        "r_Y": "[Valid connection]",
+        "a_yes": "Yes",
+        "a_no": "No",
+        "btn_restart": "Neu starten",
+        "btn_continue": "Weiter"
       }
     }
   },
@@ -30,57 +60,184 @@
       "id": "start",
       "type": "start",
       "text": "s_start",
-      "next": "q1"
+      "next": "A"
     },
     {
-      "id": "q1",
+      "id": "A",
+      "type": "process",
+      "text": "p_A",
+      "next": "B"
+    },
+    {
+      "id": "B",
+      "type": "process",
+      "text": "p_B",
+      "next": "C"
+    },
+    {
+      "id": "C",
       "type": "decision",
-      "text": "q_color",
+      "text": "q_C",
       "outcomes": [
         {
-          "label": "a_yes",
-          "condition": "true",
-          "next": "r1"
+          "label": "a_no",
+          "condition": "no",
+          "next": "X"
         },
         {
+          "label": "a_yes",
+          "condition": "yes",
+          "next": "D"
+        }
+      ]
+    },
+    {
+      "id": "D",
+      "type": "process",
+      "text": "p_D",
+      "next": "E"
+    },
+    {
+      "id": "E",
+      "type": "decision",
+      "text": "q_E",
+      "outcomes": [
+        {
           "label": "a_no",
-          "condition": "else",
-          "next": "r2"
+          "condition": "no",
+          "next": "X"
+        },
+        {
+          "label": "a_yes",
+          "condition": "yes",
+          "next": "F"
         }
       ]
     },
     {
-      "id": "r1",
-      "type": "result",
-      "text": "r_red",
-      "actions": [
+      "id": "F",
+      "type": "process",
+      "text": "p_F",
+      "next": "G"
+    },
+    {
+      "id": "G",
+      "type": "decision",
+      "text": "q_G",
+      "outcomes": [
         {
-          "type": "tooltip",
-          "text": "Rot ist eine Primärfarbe."
+          "label": "a_no",
+          "condition": "no",
+          "next": "X"
+        },
+        {
+          "label": "a_yes",
+          "condition": "yes",
+          "next": "H"
         }
       ]
     },
     {
-      "id": "r2",
-      "type": "result",
-      "text": "r_blue",
-      "actions": [
+      "id": "H",
+      "type": "process",
+      "text": "p_H",
+      "next": "I"
+    },
+    {
+      "id": "I",
+      "type": "process",
+      "text": "p_I",
+      "next": "J"
+    },
+    {
+      "id": "J",
+      "type": "process",
+      "text": "p_J",
+      "next": "K"
+    },
+    {
+      "id": "K",
+      "type": "decision",
+      "text": "q_K",
+      "outcomes": [
         {
-          "type": "tooltip",
-          "text": "Blau ist ebenfalls eine Primärfarbe."
+          "label": "a_no",
+          "condition": "no",
+          "next": "X"
+        },
+        {
+          "label": "a_yes",
+          "condition": "yes",
+          "next": "L"
         }
       ]
+    },
+    {
+      "id": "L",
+      "type": "process",
+      "text": "p_L",
+      "next": "M"
+    },
+    {
+      "id": "M",
+      "type": "decision",
+      "text": "q_M",
+      "outcomes": [
+        {
+          "label": "a_no",
+          "condition": "no",
+          "next": "X"
+        },
+        {
+          "label": "a_yes",
+          "condition": "yes",
+          "next": "N"
+        }
+      ]
+    },
+    {
+      "id": "N",
+      "type": "process",
+      "text": "p_N",
+      "next": "O"
+    },
+    {
+      "id": "O",
+      "type": "decision",
+      "text": "q_O",
+      "outcomes": [
+        {
+          "label": "a_no",
+          "condition": "no",
+          "next": "X"
+        },
+        {
+          "label": "a_yes",
+          "condition": "yes",
+          "next": "Y"
+        }
+      ]
+    },
+    {
+      "id": "X",
+      "type": "result",
+      "text": "r_X"
+    },
+    {
+      "id": "Y",
+      "type": "result",
+      "text": "r_Y"
     }
   ],
   "metadata": {
     "source": {
       "format": "Mermaid",
       "file": "mermaid_example.mmd",
-      "content": "\nflowchart TD\n  A([Start]) --> B{Welche Farbe?}\n  B -- Ja --> C[Rot]\n  B -- Nein --> D[Blau]\n"
+      "content": "\nflowchart TD\n\n    A[\"Extract bottom certificate<br/>(website certificate)<br/>and make it the current certificate\"]\n    B[Compare website name<br/>to common name]\n    C{Names match?}\n    D[\"Apply other verification requirements<br/>(validity period, revocation, etc.)\"]\n    E{Verification requirements passed?}\n    F[Verify issuer's signature<br/>of current certificate]\n    G{Signature verified?}\n    H[Extract issuer certificate]\n    I[Make issuer certificate<br/>the current certificate]\n    J[Compare issuer certificate<br/>to current certificate]\n    K{Certificates are the same?}\n    L[Lookup issuer certificate<br/>in trusted root certificate database]\n    M{Certificate found?}\n    N[\"Compare issuer certificate<br/>to one found<br/>in trusted root certificate database\"]\n    O{Certificates match?}\n\n    X[\"[Invalid connection]\"]\n    Y[\"[Valid connection]\"]\n\n    A --> B --> C\n    C -- No --> X\n    C -- Yes --> D\n    D --> E\n    E -- No --> X\n    E -- Yes --> F\n    F --> G\n    G -- No --> X\n    G -- Yes --> H\n    H --> I --> J --> K\n    K -- No --> X\n    K -- Yes --> L\n    L --> M\n    M -- No --> X\n    M -- Yes --> N --> O\n    O -- No --> X\n    O -- Yes --> Y\n"
     },
     "audit": {
       "createdBy": "copilot",
-      "createdAt": "2026-01-21T08:52:58+01:00"
+      "createdAt": "2026-01-22T10:27:23.990406"
     }
   }
 }

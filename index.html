@@ -1,25 +1,27 @@
-
 <!doctype html>
-<html lang="de">
+<html lang="en">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Wizard Demo</title>
-  <link rel="stylesheet" href="./styles.css"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TLS Certificate Validation – Wizard</title>
+  <link rel="stylesheet" href="./styles.css" />
 </head>
+
 <body>
   <header>
-    <h1 id="title">Wizard</h1>
+    <h1 id="title">TLS Certificate Validation – Wizard</h1>
     <div style="margin-left:auto"></div>
-    <label class="small" for="locale">Sprache:</label>
-    <select id="locale" aria-label="Sprache auswählen"></select>
+    <label class="small" for="locale">Locale:</label>
+    <select id="locale" aria-label="Select language"></select>
   </header>
   <main>
     <div id="app"></div>
-    <footer>
-      <p>Quelle: Mermaid → JSON (Beispiel). Dieses Paket enthält <code>index.html</code>, <code>styles.css</code>, <code>app.js</code>, <code>diagram.json</code>.</p>
+    <footer class="small" style="margin-top:16px">
+      Mermaid source: <code>mermaid_example.mmd</code> · JSON model: <code>diagram.json</code>
     </footer>
   </main>
   <script type="module" src="./app.js"></script>
 </body>
+
 </html>

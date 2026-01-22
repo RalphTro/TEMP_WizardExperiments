@@ -1,16 +1,5 @@
-
-async function loadModel(url){
-  const res = await fetch(url);
-  if(!res.ok) throw new Error('JSON konnte nicht geladen werden');
-  return await res.json();
-}
-
-function i18nHelper(model){
-  let locale = model.i18n?.defaultLocale || 'de';
-  const t = (key)=> (model.i18n?.strings?.[locale]?.[key] ?? key);
-  return { t, get locale(){return locale;}, setLocale(l){ if(model.i18n?.strings?.[l]) locale=l; } };
-}
-
+async function loadModel(url){ const res = await fetch(url); if(!res.ok) throw new Error('JSON load failed'); return res.json(); }
+function i18nHelper(model){ let locale = model.i18n?.defaultLocale || 'en'; const t=(k)=> (model.i18n?.strings?.[locale]?.[k] ?? k); return { t, get locale(){return locale;}, setLocale(l){ if(model.i18n?.strings?.[l]) locale=l; } }; }
 function runWizard(model){
   const i18n = i18nHelper(model);
   const state = { current: (model.nodes.find(n=>n.type==='start')?.next), history: [] };
@@ -20,67 +9,59 @@ function runWizard(model){
 
   const render = () => {
     const node = model.nodes.find(n=>n.id===state.current);
-    if(!node){ root.innerHTML = '<p>Ende.</p>'; return; }
+    if(!node){ root.innerHTML = '<p>End.</p>'; return; }
 
-    if(node.type==='decision'){
+    if(node.type==='process'){
+      root.innerHTML = `
+        <div class="card">
+          <div class="badge">Step</div>
+          <h2>${i18n.t(node.text)}</h2>
+          <div class="buttons"><button id="next">${i18n.t('btn_continue')||'Continue'}</button></div>
+          <hr/><div class="small">Node: ${node.id}</div>
+        </div>`;
+      document.getElementById('next').addEventListener('click', ()=>{ state.history.push({ from: node.id, to: node.next, label: 'continue' }); state.current = node.next; render(); });
+    }
+    else if(node.type==='decision'){
       root.innerHTML = `
         <div class="card">
           <div class="badge">Decision</div>
           <h2>${i18n.t(node.text)}</h2>
-          <div class="buttons">
-            ${node.outcomes.map((o,i)=>`<button data-i="${i}">${i18n.t(o.label)}</button>`).join('')}
-          </div>
-          <hr/>
-          <div class="small">Node: ${node.id}</div>
+          <div class="buttons">${node.outcomes.map((o,i)=>`<button data-i="${i}">${i18n.t(o.label)}</button>`).join('')}</div>
+          <hr/><div class="small">Node: ${node.id}</div>
         </div>`;
       root.querySelectorAll('button').forEach(btn=>{
-        btn.addEventListener('click',()=>{
-          const o = node.outcomes[Number(btn.dataset.i)];
-          state.history.push({ from: node.id, to: o.next, label: o.label });
-          state.current = o.next;
-          render();
-        });
+        btn.addEventListener('click',()=>{ const o = node.outcomes[Number(btn.dataset.i)]; state.history.push({ from: node.id, to: o.next, label: o.label }); state.current = o.next; render(); });
       });
-    } else if(node.type==='result'){
-      const tooltip = (node.actions||[]).find(a=>a.type==='tooltip');
+    }
+    else if(node.type==='result'){
       root.innerHTML = `
         <div class="card">
           <div class="badge" style="background:#052e1b;border-color:#064e3b;color:#a7f3d0">Result</div>
           <h2>${i18n.t(node.text)}</h2>
-          ${tooltip ? `<div class="tooltip">${tooltip.text}</div>` : ''}
-          <div class="buttons" style="margin-top:24px">
-            <button id="restart">${i18n.t('btn_restart')||'Neu starten'}</button>
-          </div>
-          <hr/>
-          <div class="small">Node: ${node.id}</div>
+          <div class="buttons" style="margin-top:24px"><button id="restart">${i18n.t('btn_restart')||'Restart'}</button></div>
+          <hr/><div class="small">Node: ${node.id}</div>
         </div>`;
-      document.getElementById('restart').addEventListener('click', ()=>{
-        state.current = model.nodes.find(n=>n.type==='start')?.next;
-        state.history=[]; render();
-      });
-    } else if(node.type==='process' || node.type==='start'){
-      // Auto-advance
-      state.current = node.next; render();
-    } else {
+      document.getElementById('restart').addEventListener('click', ()=>{ state.current = model.nodes.find(n=>n.type==='start')?.next; state.history=[]; render(); });
+    }
+    else if(node.type==='start'){
+      root.innerHTML = `
+        <div class="card">
+          <div class="badge">Start</div>
+          <h2>${i18n.t(node.text)}</h2>
+          <div class="buttons"><button id="next">${i18n.t('btn_continue')||'Continue'}</button></div>
+          <hr/><div class="small">Node: ${node.id}</div>
+        </div>`;
+      document.getElementById('next').addEventListener('click', ()=>{ state.current = node.next; render(); });
+    }
+    else {
       root.innerHTML = `<pre>${JSON.stringify(node,null,2)}</pre>`;
     }
   };
-
-  // Locale switcher
   const localeSel = document.getElementById('locale');
-  if(localeSel){
-    localeSel.addEventListener('change', ()=>{ i18n.setLocale(localeSel.value); render(); });
-  }
-  // Populate locales
-  const locales = Object.keys(model.i18n?.strings||{de:{}});
+  const locales = Object.keys(model.i18n?.strings||{en:{}});
   localeSel.innerHTML = locales.map(l=>`<option value="${l}">${l}</option>`).join('');
-  localeSel.value = model.i18n?.defaultLocale||'de';
-
+  localeSel.value = model.i18n?.defaultLocale||'en';
+  localeSel.addEventListener('change', ()=>{ i18n.setLocale(localeSel.value); render(); });
   render();
 }
-
-(async function(){
-  const model = await loadModel('./diagram.json');
-  window.__wizardModel = model;
-  runWizard(model);
-})();
+(async function(){ const model = await loadModel('./diagram.json'); window.__wizardModel = model; runWizard(model); })();

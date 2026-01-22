@@ -1,5 +1,38 @@
-
 flowchart TD
-  A([Start]) --> B{Welche Farbe?}
-  B -- Ja --> C[Rot]
-  B -- Nein --> D[Blau]
+
+    A["Extract bottom certificate<br/>(website certificate)<br/>and make it the current certificate"]
+    B[Compare website name<br/>to common name]
+    C{Names match?}
+    D["Apply other verification requirements<br/>(validity period, revocation, etc.)"]
+    E{Verification requirements passed?}
+    F[Verify issuer's signature<br/>of current certificate]
+    G{Signature verified?}
+    H[Extract issuer certificate]
+    I[Make issuer certificate<br/>the current certificate]
+    J[Compare issuer certificate<br/>to current certificate]
+    K{Certificates are the same?}
+    L[Lookup issuer certificate<br/>in trusted root certificate database]
+    M{Certificate found?}
+    N["Compare issuer certificate<br/>to one found<br/>in trusted root certificate database"]
+    O{Certificates match?}
+
+    X["[Invalid connection]"]
+    Y["[Valid connection]"]
+
+    A --> B --> C
+    C -- No --> X
+    C -- Yes --> D
+    D --> E
+    E -- No --> X
+    E -- Yes --> F
+    F --> G
+    G -- No --> X
+    G -- Yes --> H
+    H --> I --> J --> K
+    K -- No --> X
+    K -- Yes --> L
+    L --> M
+    M -- No --> X
+    M -- Yes --> N --> O
+    O -- No --> X
+    O -- Yes --> Y

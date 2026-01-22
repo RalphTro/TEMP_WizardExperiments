@@ -1,12 +1,13 @@
-# Wizard Demo
+# TLS Certificate Validation – Wizard (Demo)
 
-Diese Demo rendert einen interaktiven, web-basierten Entscheidungs-Wizard aus `diagram.json`.
+Jetzt mit **sichtbaren Prozess-/Task-Schritten** (kein Auto-Advance). Jede Aktivität wird als eigener Schritt mit "Continue"-Button gerendert.
 
 ## Dateien
 - `index.html` – Einstiegspunkt
-- `styles.css` – minimales Styling
-- `app.js` – Wizard-Logik (reines ES Modules, kein Build-Tool nötig)
-- `diagram.json` – aus Mermaid-Beispiel abgeleitetes Zielformat (mit i18n)
+- `styles.css` – Styling
+- `app.js` – Wizard-Logik
+- `diagram.json` – neutrales Zielformat (mit i18n)
+- `mermaid_example.mmd` – Mermaid-Quelle
 
 ## Nutzung
-Öffne `index.html` direkt im Browser **oder** starte einen lokalen Server (z. B. VS Code "Live Server"), um `fetch()` von `diagram.json` zu erlauben.
+Öffne `index.html` im Browser oder nutze einen lokalen Server (z. B. VS Code *Live Server*), damit `fetch()` für `diagram.json` funktioniert.
